@@ -1,3 +1,9 @@
-//
-// Created by lms on 24. 12. 13.
-//
+#include <iostream>
+#include "Remocon.h"
+
+int main(){
+    RemoconHandler rhdr;
+    rhdr.showDevice();
+
+
+}

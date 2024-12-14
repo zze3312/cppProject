@@ -11,27 +11,21 @@ struct Device {
 };
 
 class Remocon {
-    Device *deviceInfo;
-    static Device *deviceList[];
-    static int deviceCnt;
+protected:
     bool power;
-    bool offTimeYn;
-    string offTime;
-
+    bool remoconMode;
+    bool timeModeYn;
+    tm *nowtime;
+    tm *timeModeTime = new tm();
 public:
-    Remocon(); //기기등록
-    ~Remocon(); //기기해제
+    Remocon();
     void func_R(); //전원버튼
-    void func_T(); //시간설정
-    virtual void func_W();
-    virtual void func_A();
-    virtual void func_S();
-    virtual void func_D();
-    virtual void func_X();
-    virtual void func_C(); //상태확인
-    void showDevice(); //기기목록
-    Device* getDeviceInfo(){ return deviceInfo; }
-    bool getPower(){ return power; }
+    void func_T(); //취침모드 전환
+    void func_S(); //취침시간 설정모드 전환
+    virtual void func_W(); //UP1
+    virtual void func_A(); //DOWN2
+    virtual void func_D(); //UP2
+    virtual void func_X(); //DOWN1
 };
 
 class Television : public Remocon {
@@ -43,35 +37,50 @@ public:
     void func_A();//볼륨DOWN
     void func_D();//볼륨UP
     void func_X();//채널DOWN
-    void func_C();
 };
 
 class AirConditional : public Remocon {
     int temperature;
-    int power;
+    int airflow;
 public:
     void func_W();//온도UP
     void func_A();//풍량DOWN
     void func_D();//풍량UP
     void func_X();//온도DOWN
-    void func_C();
 };
 
 class AirCleaner : public Remocon {
+    char direction;
+    int airflow;
+public:
     void func_W();//방향_상
-    void func_A();//방향_좌 / 풍량down
-    void func_D();//방향_우 / 풍량up
     void func_X();//방향_하
-    void func_S();//방향 풍량 전환
-    void func_C();
+    void func_D();//풍량up
+    void func_A();//풍량down
 };
 
-class clock : public Remocon {
+class Clock : public Remocon {
+public:
+    Clock();
+    ~Clock();
     void func_W();//시간up
-    void func_A();//분down
-    void func_D();//분up
     void func_X();//시간down
-    void func_C();
+    void func_D();//분up
+    void func_A();//분down
+};
+
+class Light : public Remocon{
+
+};
+
+class RemoconHandler {
+    Device *newDevice;
+    static Device *deviceList[10];
+    static int deviceCnt;
+public:
+    void insertDevice();
+    void removeDevide();
+    void showDevice(); //기기목록
 };
 
 #endif //RTSET_H
