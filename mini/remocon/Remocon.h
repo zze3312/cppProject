@@ -22,6 +22,8 @@ public:
     void func_R(); //전원버튼
     void func_T(); //취침모드 전환
     void func_S(); //취침시간 설정모드 전환
+    void funcRemocon();
+    virtual void printFunc();
     virtual void func_W(); //UP1
     virtual void func_A(); //DOWN2
     virtual void func_D(); //UP2
@@ -33,6 +35,7 @@ class Television : public Remocon {
     int volume;
 public:
     Television();
+    void printFunc();
     void func_W();//채널UP
     void func_A();//볼륨DOWN
     void func_D();//볼륨UP
@@ -43,6 +46,7 @@ class AirConditional : public Remocon {
     int temperature;
     int airflow;
 public:
+    void printFunc();
     void func_W();//온도UP
     void func_A();//풍량DOWN
     void func_D();//풍량UP
@@ -53,6 +57,7 @@ class AirCleaner : public Remocon {
     char direction;
     int airflow;
 public:
+    void printFunc();
     void func_W();//방향_상
     void func_X();//방향_하
     void func_D();//풍량up
@@ -63,6 +68,7 @@ class Clock : public Remocon {
 public:
     Clock();
     ~Clock();
+    void printFunc();
     void func_W();//시간up
     void func_X();//시간down
     void func_D();//분up
@@ -70,17 +76,15 @@ public:
 };
 
 class Light : public Remocon{
-
+public:
+    void printFunc();
 };
 
 class RemoconHandler {
-    Device *newDevice;
-    static Device *deviceList[10];
-    static int deviceCnt;
 public:
-    void insertDevice();
-    void removeDevide();
-    void showDevice(); //기기목록
+    void insertDevice(Device *deviceList[10], Remocon *remoconList[10]);
+    void removeDevide(Device *deviceList[10]);
+    void showDevice(Device *deviceList[10]); //기기목록
 };
 
 #endif //RTSET_H

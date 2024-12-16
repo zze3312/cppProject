@@ -21,12 +21,60 @@ void Remocon::func_S(){
     cout << "취침 시간설정 모드가 " << (remoconMode ? "켜" : "꺼") << "졌습니다" <<endl;
 }
 
+void Remocon::func_W(){return;}
+void Remocon::func_A(){return;}
+void Remocon::func_D(){return;}
+void Remocon::func_X(){return;}
+void Remocon::funcRemocon(){
+    char input;
+    printFunc();
+    cin >> input;
+    switch (input) {
+        case 'w': case 'W':
+            func_W();
+        break;
+        case 'x': case 'X':
+            func_X();
+        break;
+        case 'd': case 'D':
+            func_D();
+        break;
+        case 'a': case 'A':
+            func_A();
+        break;
+        case 'r': case 'R':
+            func_R();
+        break;
+        case 't': case 'T':
+            func_T();
+        break;
+        case 's': case 'S':
+            func_S();
+        break;
+        default:
+            cout << "잘못된 입력입니다." << endl;
+    }
+}
+
+void Remocon::printFunc(){return;}
 
 
 Television::Television() {
     volume = 10;
     channel = 1;
 }
+void Television::printFunc() {
+    cout << "------------TV------------" << endl;
+    cout << " w : 채널UP" << endl;
+    cout << " x : 채널DOWN" << endl;
+    cout << " d : 볼륨UP" << endl;
+    cout << " a : 볼륨DOWN" << endl;
+    cout << " r : 전원버튼" << endl;
+    cout << " t : 취침모드 전환" << endl;
+    cout << " s : 취침시간 설정모드 전환" << endl;
+    cout << "--------------------------" << endl;
+}
+
 
 void Television::func_W() {
     if(timeModeYn){
@@ -63,6 +111,18 @@ void Television::func_D() {
         volume++;
         cout << "볼륨을 올립니다(현재 볼륨 : " << volume << ")" << endl;
     }
+}
+
+void AirConditional::printFunc() {
+    cout << "------------TV------------" << endl;
+    cout << " w : 온도UP" << endl;
+    cout << " x : 온도DOWN" << endl;
+    cout << " d : 풍량UP" << endl;
+    cout << " a : 풍량DOWN" << endl;
+    cout << " r : 전원버튼" << endl;
+    cout << " t : 취침모드 전환" << endl;
+    cout << " s : 취침시간 설정모드 전환" << endl;
+    cout << "--------------------------" << endl;
 }
 
 
@@ -103,6 +163,18 @@ void AirConditional::func_A() {
 }
 
 
+void AirCleaner::printFunc() {
+    cout << "------------TV------------" << endl;
+    cout << " w : 방향_상" << endl;
+    cout << " x : 방향_하" << endl;
+    cout << " d : 풍량UP" << endl;
+    cout << " a : 풍량DOWN" << endl;
+    cout << " r : 전원버튼" << endl;
+    cout << " t : 취침모드 전환" << endl;
+    cout << " s : 취침시간 설정모드 전환" << endl;
+    cout << "--------------------------" << endl;
+}
+
 void AirCleaner::func_W(){
     if(timeModeYn){
         timeModeTime->tm_hour++;
@@ -139,8 +211,6 @@ void AirCleaner::func_A() {
     }
 }
 
-
-
 Clock::Clock(){
     nowtime = new tm();
     time_t timer = time(NULL);
@@ -149,6 +219,18 @@ Clock::Clock(){
 
 Clock::~Clock(){
     delete nowtime;
+}
+
+void Clock::printFunc() {
+    cout << "------------TV------------" << endl;
+    cout << " w : 시간UP" << endl;
+    cout << " x : 시간DOWN" << endl;
+    cout << " d : 분UP" << endl;
+    cout << " a : 분DOWN" << endl;
+    cout << " r : 전원버튼" << endl;
+    cout << " t : 취침모드 전환" << endl;
+    cout << " s : 취침시간 설정모드 전환" << endl;
+    cout << "--------------------------" << endl;
 }
 
 void Clock::func_W(){
@@ -187,14 +269,24 @@ void Clock::func_D(){
     }
 }
 
-void RemoconHandler::insertDevice(){
+
+void Light::printFunc() {
+    cout << "------------TV------------" << endl;
+    cout << " r : 전원버튼" << endl;
+    cout << " t : 취침모드 전환" << endl;
+    cout << " s : 취침시간 설정모드 전환" << endl;
+    cout << "--------------------------" << endl;
+}
+
+void RemoconHandler::insertDevice(Device *deviceList[], Remocon *remoconList[10]){
     char num;
     char input;
     
-    newDevice = new Device();
+    Device *newDevice = new Device();
+    system("clear");
     cout << "----------기기등록----------" << endl;
     cout << "등록하실 번호를 선택해 주세요";
-    cin >> input;
+    cin >> num;
     if(isdigit(num)){
         cout << "--------------------------" << endl;
         cout << "등록하실 장소를 선택해 주세요" << endl;
@@ -206,15 +298,15 @@ void RemoconHandler::insertDevice(){
             cout << "입력 : ";
             cin >> input;
             if (input == '1') {
-                this->newDevice->position = "거실";
+                newDevice->position = "거실";
                 cout << "거실이 선택되었습니다." << endl;
                 break;
             }else if (input == '2') {
-                this->newDevice->position = "안방";
+                newDevice->position = "안방";
                 cout << "안방이 선택되었습니다." << endl;
                 break;
             }else if (input == '3') {
-                this->newDevice->position = "작은방";
+                newDevice->position = "작은방";
                 cout << "작은방이 선택되었습니다." << endl;
                 break;
             }else {
@@ -233,23 +325,23 @@ void RemoconHandler::insertDevice(){
             cout << "입력 : "; 
             cin >> input;
             if (input == '1') {
-                this->newDevice->type = "TV";
+                newDevice->type = "TV";
                 cout << "TV가 선택되었습니다." << endl;
                 break;
             }else if (input == '2') {
-                this->newDevice->type = "에어컨";
+                newDevice->type = "에어컨";
                 cout << "에어컨이 선택되었습니다." << endl;
                 break;
             }else if (input == '3') {
-                this->newDevice->type = "공기청정기";
+                newDevice->type = "공기청정기";
                 cout << "공기청정기가 선택되었습니다." << endl;
                 break;
             }else if (input == '4') {
-                this->newDevice->type = "시계";
+                newDevice->type = "시계";
                 cout << "시계가 선택되었습니다." << endl;
                 break;
             }else if (input == '5') {
-                this->newDevice->type = "전등";
+                newDevice->type = "전등";
                 cout << "전등이 선택되었습니다." << endl;
                 break;
             }else {
@@ -257,10 +349,23 @@ void RemoconHandler::insertDevice(){
             }
         }
     }
-    deviceList[num] = newDevice;
+    deviceList[num - '0' - 1]->position = newDevice->position;
+    deviceList[num - '0' - 1]->type = newDevice->type;
+    if (newDevice->type == "TV") {
+        remoconList[num - '0' - 1] = new Television();
+    }else if (newDevice->type == "에어컨") {
+        remoconList[num - '0' - 1] = new AirConditional();
+    }else if (newDevice->type == "공기청정기") {
+        remoconList[num - '0' - 1] = new AirCleaner();
+    }else if (newDevice->type == "시계") {
+        remoconList[num - '0' - 1] = new Clock();
+    }else if (newDevice->type == "전등") {
+        remoconList[num - '0' - 1] = new Light();
+    }
+
 }
 
-void RemoconHandler::removeDevide(){
+void RemoconHandler::removeDevide(Device *deviceList[]){
     char input;
     Device selectDevice;
 
@@ -272,17 +377,18 @@ void RemoconHandler::removeDevide(){
     }
 }
 
-void RemoconHandler::showDevice() {
+void RemoconHandler::showDevice(Device *deviceList[]) {
     system("clear");
     cout << "----------기기목록----------" << endl;
-    for (int i = 0; i < deviceCnt; i++) {
-        if(deviceList[i] -> position != ""){
-            cout << i + 1 << ". " << deviceList[i] -> position << " " << deviceList[i] -> type << endl;
+    for (int i = 0; i < 10; i++) {
+        if(deviceList[i]->position != ""){
+            cout << i + 1 << ". " << deviceList[i]->position << " " << deviceList[i]->type << endl;
         }else{
-            cout << "등록된 기기가 없습니다" << endl;
+            cout << i + 1 << ". 등록된 기기가 없습니다" << endl;
         }
         
     }
+    cout << "--------------------------" << endl;
     cout << "0. 기기등록" << endl;
     cout << "--------------------------" << endl;
 }
