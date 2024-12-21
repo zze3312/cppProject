@@ -3,21 +3,21 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
-using namespace std;
 
 void error_handling(char *message);
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[]) {
     int sock;
     sockaddr_in serv_addr;
-    char message[30];
+    char message[30] = "";
     int str_len = 0;
-    int idx = 0, read_len = 0;
+    int idx = 0;
+    int read_len = 0;
 
     if (argc != 3) {
-        cout << "Usage : " << argv[0] << " <IP> <port>\n";
+        printf("Usage : %s <IP> <port>\n", argv[0]);
+        exit(1);
     }
-
     sock = socket(PF_INET, SOCK_STREAM, 0);
     if (sock == -1) {
         error_handling("socket() error");
@@ -32,18 +32,19 @@ int main(int argc, char *argv[]){
         error_handling("connect() error");
     }
 
-    while(read_len = read(sock, &message[idx++], 1)){
-        if(read_len == -1){
-        error_handling("read() error");
+    // read함수가 0을 반환하면 이는 거짓을 의미하므로 while을 빠져나갈 수 있음
+    while (read_len = read(sock, &message[idx++], 1)) {
+        if (read_len == -1) {
+            error_handling("read() error");
         }
+
         str_len += read_len;
     }
 
-
-    cout << "Message from server: " << message << endl;
-    cout << "Function read call count : " << str_len << endl;
+    printf("Message from server : %s\n", message);
+    printf("Function read call count : %d\n", str_len);
     close(sock);
-    return 0;
+
 }
 
 void error_handling(char *message) {

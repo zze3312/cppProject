@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
     int str_len;
 
     if (argc != 3) {
-        cout << "Usage : " << argv[0] << " <port> <message>\n";
+        cout << "Usage : " << argv[0] << " <IP> <port>\n";
     }
 
     sock = socket(PF_INET, SOCK_STREAM, 0);
